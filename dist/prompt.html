@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Prompt in phind.com | Sc Parallels</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import "./_observablehq/client.js";
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Sc Parallels</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link observablehq-link-active"><a href="./prompt">Prompt in phind.com</a></li>
+    <li class="observablehq-link"><a href="./source">Sources</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="prompt-in-phind.com" tabindex="-1"><a class="observablehq-header-anchor" href="#prompt-in-phind.com">Prompt in phind.com</a></h1>
+<blockquote>
+<p>I have a array (size 6725) of parallels of the kind:</p>
+</blockquote>
+<pre><code>sag	sn4.25						
+sag	an10.26	sn4.25					
+uv1	t213.1	uv-kg1	t212.1					
+dhp21	gdhp115	ja520	pdhp14	t210.10	t212.4	t213.4	uv4	sag	uv-kg4	uvs4									
+dhp349	t210.32	t212.3	t213.3	uv3	sag	uv-kg3											uv-kg3	uv3	t212.3	t213.3	dhp337				
+uv5	dhp217	t210.24	t212.6	t213.5	sag	uv-kg5	uvs5						
+uv9	t210.17	t212.10	t213.9	sag	uv-kg9	uvs9
+</code></pre>
+<blockquote>
+<p>parallels are array contain two or more items.</p>
+</blockquote>
+<blockquote>
+<p>I have an array called root of size 1119 of items. item in root are either of the form "sag" or "sn4.25" or they can be of the form "js520-525" (with a dash representing a range of item, from "js520" to "js525").</p>
+</blockquote>
+<blockquote>
+<p>Note that item in parallels are never range, they are single items)</p>
+</blockquote>
+<blockquote>
+<p>We want to loop through all the item in root and check if they are contains in a parrallel. If they are,  we want to add all the items of the found parallel to the item we are looping. We dont want duplicte.</p>
+</blockquote>
+<blockquote>
+<p>Can you give me that function in js</p>
+</blockquote>
+<h2 id="reply" tabindex="-1"><a class="observablehq-header-anchor" href="#reply">Reply</a></h2>
+<pre data-language="js"><code class="language-js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">addParallelItems</span>(<span class="hljs-params">root, parallels</span>) {
+ <span class="hljs-comment">// Helper function to remove duplicates from an array</span>
+ <span class="hljs-keyword">function</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">array</span>) {
+    <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(array)];
+ }
+
+ <span class="hljs-comment">// Loop through each item in the root array</span>
+ root.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">item, index</span>) =&gt;</span> {
+    <span class="hljs-comment">// Check if the item is a range</span>
+    <span class="hljs-keyword">if</span> (item.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'-'</span>)) {
+      <span class="hljs-keyword">const</span> [start, end] = item.<span class="hljs-title function_">split</span>(<span class="hljs-string">'-'</span>);
+      <span class="hljs-comment">// Loop through each parallel</span>
+      parallels.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallel</span> =&gt;</span> {
+        <span class="hljs-comment">// Check if any item in the parallel is within the range</span>
+        parallel.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallelItem</span> =&gt;</span> {
+          <span class="hljs-keyword">if</span> (parallelItem &gt;= start &amp;&amp; parallelItem &lt;= end) {
+            <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
+            root[index] = <span class="hljs-title function_">removeDuplicates</span>([...root[index], ...parallel]);
+          }
+        });
+      });
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// If the item is not a range, directly check for its presence in parallels</span>
+      parallels.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallel</span> =&gt;</span> {
+        <span class="hljs-keyword">if</span> (parallel.<span class="hljs-title function_">includes</span>(item)) {
+          <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
+          root[index] = <span class="hljs-title function_">removeDuplicates</span>([...root[index], ...parallel]);
+        }
+      });
+    }
+ });
+
+ <span class="hljs-keyword">return</span> root;
+}
+
+<span class="hljs-comment">// Example usage</span>
+<span class="hljs-keyword">const</span> root = [<span class="hljs-string">'sag'</span>, <span class="hljs-string">'sn4.25'</span>, <span class="hljs-string">'js520-525'</span>];
+<span class="hljs-keyword">const</span> parallels = [
+ [<span class="hljs-string">'sag'</span>, <span class="hljs-string">'sn4.25'</span>],
+ [<span class="hljs-string">'uv1'</span>, <span class="hljs-string">'t213.1'</span>, <span class="hljs-string">'uv-kg1'</span>, <span class="hljs-string">'t212.1'</span>],
+ [<span class="hljs-string">'dhp21'</span>, <span class="hljs-string">'gdhp115'</span>, <span class="hljs-string">'ja520'</span>, <span class="hljs-string">'pdhp14'</span>, <span class="hljs-string">'t210.10'</span>, <span class="hljs-string">'t212.4'</span>, <span class="hljs-string">'t213.4'</span>, <span class="hljs-string">'uv4'</span>, <span class="hljs-string">'sag'</span>, <span class="hljs-string">'uv-kg4'</span>, <span class="hljs-string">'uvs4'</span>],
+ <span class="hljs-comment">// Add more parallels as needed</span>
+];
+
+<span class="hljs-keyword">const</span> updatedRoot = <span class="hljs-title function_">addParallelItems</span>(root, parallels);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(updatedRoot);
+</code></pre>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./"><span>Sc Parallels</span></a><a rel="next" href="./source"><span>Sources</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-04-21T13:28:58">Apr 21, 2024</a>.</div>
+</footer>
+</div>

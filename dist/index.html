@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Sutta Central Parallels | Sc Parallels</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+import {registerFile} from "./_observablehq/stdlib.js";
+
+registerFile("./data/leaves.json", {"name":"./data/leaves.json","mimeType":"application/json","path":"./_file/data/leaves.ba39b245.json","lastModified":1713705695919});
+registerFile("./data/leavesWithParallels.json", {"name":"./data/leavesWithParallels.json","mimeType":"application/json","path":"./_file/data/leavesWithParallels.4810d771.json","lastModified":1713705683447});
+
+define({id: "ce694cdb", inputs: ["parallels","display"], body: async (parallels,display) => {
+display(await(
+parallels
+))
+}});
+
+define({id: "cf44329e", outputs: ["parallels"], body: () => {
+const parallels = fetch(
+  "https://raw.githubusercontent.com/suttacentral/sc-data/main/relationship/parallels.json"
+).then((response) => response.json())
+return {parallels};
+}});
+
+define({id: "378ef2ee", inputs: ["Inputs","parallelsArray","display"], body: async (Inputs,parallelsArray,display) => {
+display(await(
+Inputs.table(parallelsArray)
+))
+}});
+
+define({id: "d62cb149", inputs: ["parallels"], outputs: ["parallelsArray"], body: (parallels) => {
+const parallelsArray = parallels.map((d) =>
+  d.parallels?.map((p) => p.split("#")[0].replace(/~/g, ""))
+)
+return {parallelsArray};
+}});
+
+define({id: "373aa7df", inputs: ["Inputs","FileAttachment","display"], body: async (Inputs,FileAttachment,display) => {
+display(await(
+Inputs.table(FileAttachment("./data/leaves.json").json())
+))
+}});
+
+define({id: "cc337f36", inputs: ["Inputs","FileAttachment","display"], body: async (Inputs,FileAttachment,display) => {
+display(await(
+Inputs.table(FileAttachment("./data/leavesWithParallels.json").json())
+))
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link observablehq-link-active"><a href="./">Sc Parallels</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./prompt">Prompt in phind.com</a></li>
+    <li class="observablehq-link"><a href="./source">Sources</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="sutta-central-parallels" tabindex="-1"><a class="observablehq-header-anchor" href="#sutta-central-parallels">Sutta Central Parallels</a></h1>
+<br>
+<h2 id="extracting-parallels" tabindex="-1"><a class="observablehq-header-anchor" href="#extracting-parallels">Extracting Parallels</a></h2>
+<p>On Sutta Central GitHub, we find the folowing file <strong>parallels.json</strong>:</p>
+<div id="cell-ce694cdb" class="observablehq observablehq--block observablehq--loading"></div>
+<div id="cell-cf44329e" class="observablehq observablehq--block"></div>
+<pre data-language="js"><code class="language-js"><span class="hljs-keyword">const</span> parallels = <span class="hljs-title function_">fetch</span>(
+  <span class="hljs-string">"https://raw.githubusercontent.com/suttacentral/sc-data/main/relationship/parallels.json"</span>
+).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> response.<span class="hljs-title function_">json</span>())
+</code></pre>
+<p>We can extract into a simpler array, by removing the # details and the ~ (which means ?):</p>
+<div id="cell-378ef2ee" class="observablehq observablehq--block observablehq--loading"></div>
+<div id="cell-d62cb149" class="observablehq observablehq--block"></div>
+<pre data-language="js"><code class="language-js"><span class="hljs-keyword">const</span> parallelsArray = parallels.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">d</span>) =&gt;</span>
+  d.<span class="hljs-property">parallels</span>?.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">p</span>) =&gt;</span> p.<span class="hljs-title function_">split</span>(<span class="hljs-string">"#"</span>)[<span class="hljs-number">0</span>].<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/~/g</span>, <span class="hljs-string">""</span>))
+)
+</code></pre>
+<h2 id="sutta-pitaka-suttas" tabindex="-1"><a class="observablehq-header-anchor" href="#sutta-pitaka-suttas">Sutta Pitaka Suttas</a></h2>
+<p>We can extract the suttapitaka leaves from <a href="https://observablehq.com/d/861e7f60185d063d#chart" target="_blank" rel="noopener noreferrer">the following chart</a>:</p>
+<p><img src="./_file/assets/chart.0ecf8e8d.svg" alt="chart"></p>
+<p><strong>Leaves</strong> are stored in a JSON, after extracting the relevant information from <code>root.leaves()</code> we have the following data:</p>
+<div id="cell-373aa7df" class="observablehq observablehq--block observablehq--loading"></div>
+<h2 id="cross-reference" tabindex="-1"><a class="observablehq-header-anchor" href="#cross-reference">Cross Reference</a></h2>
+<p>We have <strong>6725 sets</strong> of parallels and <strong>1119 leaves</strong>. Some leaves represent individual sutta, some represent a range of sutta.</p>
+<p>For example the leaf <strong>sn4.21–25</strong> represent all the suttas from <strong>sn4.21</strong> to <strong>sn4.25</strong></p>
+<p>We want to populate the 1119 leaves with all their parallels.</p>
+<p>With the following function:</p>
+<pre data-language="js"><code class="language-js"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">'fs'</span>;
+<span class="hljs-keyword">import</span> root <span class="hljs-keyword">from</span> <span class="hljs-string">'../data/leaves.json'</span> assert { <span class="hljs-attr">type</span>: <span class="hljs-string">'json'</span> };
+<span class="hljs-keyword">import</span> parallels <span class="hljs-keyword">from</span> <span class="hljs-string">'../data/parallels.json'</span> assert { <span class="hljs-attr">type</span>: <span class="hljs-string">'json'</span> };
+
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">addParallelItems</span>(<span class="hljs-params">root, parallels</span>) {
+    <span class="hljs-comment">// Helper function to remove duplicates from an array</span>
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">array</span>) {
+        <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(array)];
+    }
+
+    <span class="hljs-comment">// Loop through each item in the root array</span>
+    root.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">d</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> item = d.<span class="hljs-property">facro</span>;
+        <span class="hljs-comment">// Check if the item is a range</span>
+        <span class="hljs-keyword">if</span> (item?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'-'</span>)) {
+            <span class="hljs-keyword">const</span> [start, end] = item.<span class="hljs-title function_">split</span>(<span class="hljs-string">'-'</span>);
+            <span class="hljs-comment">// Loop through each parallel</span>
+            parallels.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallel</span> =&gt;</span> {
+                <span class="hljs-comment">// Check if any item in the parallel is within the range</span>
+                parallel?.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallelItem</span> =&gt;</span> {
+                    <span class="hljs-keyword">if</span> (parallelItem &gt;= start &amp;&amp; parallelItem &lt;= end) {
+                        <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
+                        d.<span class="hljs-property">parallels</span> = <span class="hljs-title function_">removeDuplicates</span>([...d.<span class="hljs-property">parallels</span>, ...parallel]);
+                    }
+                });
+            });
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// If the item is not a range, directly check for its presence in parallels</span>
+            parallels?.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallel</span> =&gt;</span> {
+                <span class="hljs-keyword">if</span> (parallel?.<span class="hljs-title function_">includes</span>(item)) {
+                    <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
+                    d.<span class="hljs-property">parallels</span> = <span class="hljs-title function_">removeDuplicates</span>([...d.<span class="hljs-property">parallels</span>, ...parallel]);
+                }
+            });
+        }
+    });
+
+    <span class="hljs-keyword">return</span> root;
+}
+<span class="hljs-keyword">const</span> updatedRoot = <span class="hljs-title function_">addParallelItems</span>(root, parallels);
+
+<span class="hljs-comment">// Write the updatedRoot array to a JSON file</span>
+fs.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string">'../data/leavesWithParallels.json'</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(updatedRoot, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>), <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'The file has been saved!'</span>);
+});
+</code></pre>
+<p>We get:</p>
+<div id="cell-cc337f36" class="observablehq observablehq--block observablehq--loading"></div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="next" href="./prompt"><span>Prompt in phind.com</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-04-21T13:28:58">Apr 21, 2024</a>.</div>
+</footer>
+</div>

@@ -8,3 +8,8 @@ Based on https://observablehq.com/d/861e7f60185d063d
 npm init "@observablehq"
 ```
 
+You can build and move the dist into the root.
+
+rename as docs
+
+Then github publish to folder docs...
