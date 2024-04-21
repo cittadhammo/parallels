@@ -13,3 +13,5 @@ You can build and move the dist into the root.
 rename as docs
 
 Then github publish to folder docs...
+
+put an empty .nojekyll file in the docs. (this is important as jekyll cannot read _folder..., it is also faster)
