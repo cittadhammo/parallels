@@ -27,7 +27,8 @@ function addParallelItems(root, parallels) {
         }
     
         // If no decimal part, return the original start and end values
-        return [start, end];
+        const begining = start.split(/\d/)[0]; // ki22
+        return [start, begining+end];
     }
 
     // Loop through each item in the root array
