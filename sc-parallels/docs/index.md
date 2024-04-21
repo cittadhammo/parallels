@@ -133,3 +133,6 @@ Inputs.table(FileAttachment("./data/leavesWithParallels.json").json())
 ```
 
 
+This is good, but not sufficiant...
+
+We rather should degroup the data at the base into porper leaves... because we need both target and source to match
