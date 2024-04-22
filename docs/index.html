@@ -21,8 +21,9 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/leaves.json", {"name":"./data/leaves.json","mimeType":"application/json","path":"./_file/data/leaves.ba39b245.json","lastModified":1713705695919});
-registerFile("./data/leavesWithParallels.json", {"name":"./data/leavesWithParallels.json","mimeType":"application/json","path":"./_file/data/leavesWithParallels.4810d771.json","lastModified":1713705683447});
+registerFile("./data/leaves.json", {"name":"./data/leaves.json","mimeType":"application/json","path":"./_file/data/leaves.23143ed7.json","lastModified":1713708277439});
+registerFile("./data/leavesWithFixParallels.json", {"name":"./data/leavesWithFixParallels.json","mimeType":"application/json","path":"./_file/data/leavesWithFixParallels.8062d815.json","lastModified":1713719712179});
+registerFile("./data/leavesWithParallels.json", {"name":"./data/leavesWithParallels.json","mimeType":"application/json","path":"./_file/data/leavesWithParallels.c5cc584e.json","lastModified":1713713151018});
 
 define({id: "ce694cdb", inputs: ["parallels","display"], body: async (parallels,display) => {
 display(await(
@@ -59,6 +60,12 @@ Inputs.table(FileAttachment("./data/leaves.json").json())
 define({id: "cc337f36", inputs: ["Inputs","FileAttachment","display"], body: async (Inputs,FileAttachment,display) => {
 display(await(
 Inputs.table(FileAttachment("./data/leavesWithParallels.json").json())
+))
+}});
+
+define({id: "ea40e059", inputs: ["Inputs","FileAttachment","display"], body: async (Inputs,FileAttachment,display) => {
+display(await(
+Inputs.table(FileAttachment("./data/leavesWithFixParallels.json").json())
 ))
 }});
 
@@ -116,21 +123,42 @@ Inputs.table(FileAttachment("./data/leavesWithParallels.json").json())
         <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(array)];
     }
 
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">parseRange</span>(<span class="hljs-params">rangeString</span>) {
+        <span class="hljs-comment">// Split the string by the hyphen to separate start and end values</span>
+        <span class="hljs-keyword">const</span> parts = rangeString.<span class="hljs-title function_">split</span>(<span class="hljs-string">'–'</span>); <span class="hljs-comment">// Note: This is an en dash, not a regular hyphen (check your input)</span>
+    
+        <span class="hljs-comment">// Extract the start and end values // ki22.3–9</span>
+        <span class="hljs-keyword">const</span> start = parts[<span class="hljs-number">0</span>];  <span class="hljs-comment">// ki22.3</span>
+        <span class="hljs-keyword">const</span> end = parts[<span class="hljs-number">1</span>];    <span class="hljs-comment">// 9</span>
+    
+        <span class="hljs-comment">// Check if the start value has a decimal part</span>
+        <span class="hljs-keyword">const</span> hasDecimal = start.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'.'</span>);
+    
+        <span class="hljs-comment">// If the start value has a decimal part, append it to the end value</span>
+        <span class="hljs-keyword">if</span> (hasDecimal) {
+            <span class="hljs-keyword">const</span> begining = start.<span class="hljs-title function_">split</span>(<span class="hljs-string">'.'</span>)[<span class="hljs-number">0</span>]; <span class="hljs-comment">// ki22</span>
+            <span class="hljs-keyword">return</span> [start, begining + <span class="hljs-string">'.'</span> + end];
+        }
+    
+        <span class="hljs-comment">// If no decimal part, return the original start and end values</span>
+        <span class="hljs-keyword">const</span> begining = start.<span class="hljs-title function_">split</span>(<span class="hljs-regexp">/\d/</span>)[<span class="hljs-number">0</span>]; <span class="hljs-comment">// ki22</span>
+        <span class="hljs-keyword">return</span> [start, begining+end];
+    }
+
     <span class="hljs-comment">// Loop through each item in the root array</span>
     root.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">d</span>) =&gt;</span> {
         <span class="hljs-keyword">const</span> item = d.<span class="hljs-property">facro</span>;
         <span class="hljs-comment">// Check if the item is a range</span>
-        <span class="hljs-keyword">if</span> (item?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'-'</span>)) {
-            <span class="hljs-keyword">const</span> [start, end] = item.<span class="hljs-title function_">split</span>(<span class="hljs-string">'-'</span>);
+        <span class="hljs-keyword">if</span> (item?.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'–'</span>)) {
+            <span class="hljs-keyword">const</span> [start, end] = <span class="hljs-title function_">parseRange</span>(item);
+            d.<span class="hljs-property">range</span> = [start, end] 
             <span class="hljs-comment">// Loop through each parallel</span>
             parallels.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallel</span> =&gt;</span> {
                 <span class="hljs-comment">// Check if any item in the parallel is within the range</span>
-                parallel?.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">parallelItem</span> =&gt;</span> {
-                    <span class="hljs-keyword">if</span> (parallelItem &gt;= start &amp;&amp; parallelItem &lt;= end) {
-                        <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
-                        d.<span class="hljs-property">parallels</span> = <span class="hljs-title function_">removeDuplicates</span>([...d.<span class="hljs-property">parallels</span>, ...parallel]);
-                    }
-                });
+                <span class="hljs-keyword">if</span> (parallel &gt;= start &amp;&amp; parallel &lt;= end) {
+                    <span class="hljs-comment">// Add the parallel items to the root item, ensuring no duplicates</span>
+                    d.<span class="hljs-property">parallels</span> = <span class="hljs-title function_">removeDuplicates</span>([...d.<span class="hljs-property">parallels</span>, ...parallel]);
+                }
             });
         } <span class="hljs-keyword">else</span> {
             <span class="hljs-comment">// If the item is not a range, directly check for its presence in parallels</span>
@@ -152,12 +180,59 @@ fs.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string"
     <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'The file has been saved!'</span>);
 });
+
+
 </code></pre>
 <p>We get:</p>
 <div id="cell-cc337f36" class="observablehq observablehq--block observablehq--loading"></div>
+<p>This is good, but not sufficiant yet...</p>
+<p>We have to map the parallels with the leaf id for the one inside ranges, an, sn,</p>
+<p>With the following code:</p>
+<pre data-language="js"><code class="language-js"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">'fs'</span>;
+<span class="hljs-keyword">import</span> leaves <span class="hljs-keyword">from</span> <span class="hljs-string">'../data/leavesWithParallels.json'</span> assert { <span class="hljs-attr">type</span>: <span class="hljs-string">'json'</span> };
+
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">fixParallelsReference</span>(<span class="hljs-params">leaves</span>) {
+    <span class="hljs-comment">// Helper function to remove duplicates from an array</span>
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">array</span>) {
+        <span class="hljs-keyword">return</span> [...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(array)];
+    }
+
+    <span class="hljs-keyword">let</span> lim = <span class="hljs-number">0</span>
+
+    <span class="hljs-comment">// Loop through each item in the root array</span>
+
+    leaves.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">d</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span> || lim &lt; <span class="hljs-number">1</span>) {
+            lim++
+            d.<span class="hljs-property">parallelsInSuttaPtiaka</span> = [];
+            d.<span class="hljs-property">parallels</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">p</span> =&gt;</span> {
+                <span class="hljs-keyword">let</span> isLeaf = leaves.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">leaf</span> =&gt;</span> leaf.<span class="hljs-property">facro</span> == p)
+                <span class="hljs-keyword">if</span> (!isLeaf) isLeaf = leaves.<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">leaf</span> =&gt;</span> leaf.<span class="hljs-property">range</span>).<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">leaf</span> =&gt;</span> (leaf.<span class="hljs-property">range</span>[<span class="hljs-number">0</span>] &lt; p &amp;&amp; p &lt; leaf.<span class="hljs-property">range</span>[<span class="hljs-number">1</span>]))
+                <span class="hljs-comment">//console.log(isLeaf)</span>
+                <span class="hljs-keyword">if</span> (isLeaf &amp;&amp; isLeaf.<span class="hljs-property">facro</span> != d.<span class="hljs-property">facro</span>) d.<span class="hljs-property">parallelsInSuttaPtiaka</span> = <span class="hljs-title function_">removeDuplicates</span>([...d.<span class="hljs-property">parallelsInSuttaPtiaka</span>, isLeaf.<span class="hljs-property">facro</span>]);
+                <span class="hljs-comment">//console.log(d)</span>
+            })
+        }
+    });
+
+    <span class="hljs-keyword">return</span> leaves;
+}
+<span class="hljs-keyword">const</span> updatedRoot = <span class="hljs-title function_">fixParallelsReference</span>(leaves);
+
+<span class="hljs-comment">// Write the updatedRoot array to a JSON file</span>
+fs.<span class="hljs-title function_">writeFile</span>(<span class="hljs-string">'../data/leavesWithFixParallels.json'</span>, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(updatedRoot, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>), <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">'The file has been saved!'</span>);
+});
+</code></pre>
+<p>we have parallels that are only in our charts as leaves:</p>
+<div id="cell-ea40e059" class="observablehq observablehq--block observablehq--loading"></div>
+<p>We get a result like this</p>
+<p><img src="./_file/assets/chart2.bf516bbb.svg" alt="chart2"></p>
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./prompt"><span>Prompt in phind.com</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-04-21T13:28:58">Apr 21, 2024</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-04-22T18:19:34">Apr 22, 2024</a>.</div>
 </footer>
 </div>
